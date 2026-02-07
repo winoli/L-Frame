@@ -6,3 +6,6 @@ debug
 foo.*
 *.log
 data
+*aiKey.json
+lazy-lock.json
+lazyvim.json
