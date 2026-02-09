@@ -64,7 +64,6 @@ return {
       -- 2. 获取默认适配器对象
       local default_name = ai_env.default_chat or next(built_adapters)
       local default_adapter_obj = built_adapters[default_name]
-      print("default_name = " .. default_name)
 
       -- 3. 返回配置表
       return {
