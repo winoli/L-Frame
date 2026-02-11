@@ -1,5 +1,5 @@
 -- AI 插件 配置
--- 配置apiKey.json配置在lua/config下
+-- 配置apiKey.json配置在lua/config/asset下
 -- 配置示例
 --[[
 {
@@ -20,9 +20,11 @@
 -- 1. 安全读取并解析 JSON
 
 local function load_ai_env()
-  local path = vim.fn.stdpath("config") .. "/lua/config/aikey.json"
+  local path = vim.fn.stdpath("config") .. "/lua/config/asset/aikey.json"
   local file = io.open(path, "r")
-  if not file then return nil end
+  if not file then
+    return nil
+  end
   local content = file:read("*a")
   file:close()
   local ok, decoded = pcall(vim.fn.json_decode, content)
@@ -75,12 +77,32 @@ return {
         -- 虽然我们直连了对象，但把它们也写进 adapters 表，方便以后在 UI 中切换
         adapters = built_adapters,
         display = {
-          chat = { window = { layout = "vertical", width = 45 } },
+          chat = {
+            window = { layout = "vertical", width = 45 },
+            -- 确保不隐藏这些标签，让我们通过高亮来处理
+            show_settings = true,
+          },
         },
       }
     end,
     config = function(_, opts)
       require("codecompanion").setup(opts)
+
+      -- 1. 配置高亮逻辑：将 <think> 标签内容显示为灰色/斜体（跟随 Comment 高亮组）
+      local group = vim.api.nvim_create_augroup("CodeCompanionHooks", { clear = true })
+      
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        pattern = "codecompanion",
+        callback = function()
+          -- 定义名为 CodeCompanionThink 的语法区域
+          -- 匹配 <think> ... </think> 之间的内容
+          vim.cmd([[syntax region CodeCompanionThink start="<think>" end="</think>" keepend]])
+          
+          -- 将其链接到 Comment 高亮组 (通常是灰色/斜体，你也可以改成 String 或 Error 等)
+          vim.cmd([[highlight link CodeCompanionThink Comment]])
+        end,
+      })
 
       -- 快捷键
       vim.keymap.set({ "n", "v" }, "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "AI Chat" })

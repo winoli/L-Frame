@@ -4,6 +4,18 @@
 
 -- 配色为暗色主题
 vim.opt.background = "dark"
+-- 关闭自动格式化
+vim.g.autoformat = false
+
+-- 设置tap为四个空格
+-- 将 Tab 转换为空格（核心开关）
+vim.opt.expandtab = true 
+-- 设置缩进步长为 4 个空格
+vim.opt.shiftwidth = 4 
+-- 设置界面上一个 Tab 显示的宽度为 4
+vim.opt.tabstop = 4 
+-- 使得在插入模式下按 Tab 或退格键时，系统视其为 4 个空格
+vim.opt.softtabstop = 4
 
 if vim.g.vscode then
   vim.opt.smoothscroll = true -- 配合 VS Code 的平滑滚动
