@@ -71,4 +71,10 @@ if vim.g.vscode then
   vim.keymap.set({ "n", "v" }, "<leader>cf", function()
     vscode.call("editor.action.formatDocument")
   end, { desc = "Format Document" })
+else
+  -- 映射 Alt+o 切换头文件/源文件
+  vim.keymap.set("n", "<A-o>", "<cmd>ClangdSwitchSourceHeader<cr>", { desc = "Switch Source/Header (Alt-O)" })
+
+  -- 映射 <leader>gs 切换头文件/源文件
+  vim.keymap.set("n", "gs", "<cmd>ClangdSwitchSourceHeader<cr>", { desc = "Switch Source/Header (Leader)" })
 end

@@ -5,7 +5,7 @@ return {
       sources = {
         files = {
           hidden = true, -- 显示隐藏文件
-          ignored = true, -- ✅ 显示 gitignored 文件
+          ignored = false, -- ✅ 显示 gitignored 文件
         },
         grep = {
           hidden = true,

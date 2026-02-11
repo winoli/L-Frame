@@ -44,7 +44,9 @@ nvim
 :TSInstallSync
 ```
 
-# custom content
+## 默认修改点
+
++ UI修改
 
 + vscode适配，禁用vscode中不用的插件
 
@@ -66,4 +68,24 @@ nvim
     }
   }
 }
+```
++ 默认启用以下lazyvim扩展
+``` lua
+-- 可自行修改
+require("lazy").setup({
+  spec = {
+    { import = "lazyvim.plugins.extras.coding.yanky" },
+    { import = "lazyvim.plugins.extras.editor.dial" },
+    { import = "lazyvim.plugins.extras.lang.clangd" },
+    { import = "lazyvim.plugins.extras.lang.cmake" },
+    { import = "lazyvim.plugins.extras.lang.git" },
+    { import = "lazyvim.plugins.extras.lang.json" },
+    { import = "lazyvim.plugins.extras.lang.markdown" },
+    { import = "lazyvim.plugins.extras.lang.python" },
+    { import = "lazyvim.plugins.extras.ui.edgy" },
+    { import = "lazyvim.plugins.extras.util.gitui" },
+    { import = "lazyvim.plugins.extras.util.project" },
+    { import = "lazyvim.plugins.extras.vscode" },
+  }
+})
 ```
