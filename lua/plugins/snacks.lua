@@ -9,7 +9,7 @@ return {
         },
         grep = {
           hidden = true,
-          ignored = true, -- grep 时也包含 ignored 文件
+          ignored = false, -- grep 时也包含 ignored 文件
         },
         explorer = {
           hidden = true,

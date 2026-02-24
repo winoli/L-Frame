@@ -60,6 +60,7 @@ return {
             temperature = { default = config.temperature or 0.7 },
             max_tokens = { default = config.max_tokens or 4096 },
           },
+          
         })
       end
 
@@ -71,8 +72,34 @@ return {
       return {
         strategies = {
           -- 直接传递对象，不传字符串，物理屏蔽 "Adapter not found" 错误
-          chat = { adapter = default_adapter_obj },
+          chat = { 
+            adapter = default_adapter_obj,
+            slash_commands = {  
+              -- ✅ 关键：/project 命令 - 读取整个工作区结构  
+              ["project"] = {  
+                callback = function(chat)
+                  -- 使用 plenary 的 scan 工具扫描目录
+                  local scan = require("plenary.scandir")
+                  local files = scan.scan_dir(".", { hidden = false, add_dirs = false, depth = 3 })
+                  
+                  local content = "当前项目文件列表：\n" .. table.concat(files, "\n")
+                  
+                  chat:add_message({
+                    role = "user",
+                    content = content,
+                  }, { visible = false }) -- 在 UI 中隐藏，但发给 AI
+                  
+                  vim.notify("已将项目文件列表同步至 AI 上下文")
+                end,
+                description = "Load workspace context",  
+                opts = {  
+                  contains_code = true,  
+                },  
+              },  
+            }, 
+          },
           inline = { adapter = default_adapter_obj },
+          cmd = { adapter = default_adapter_obj },
         },
         -- 虽然我们直连了对象，但把它们也写进 adapters 表，方便以后在 UI 中切换
         adapters = built_adapters,
